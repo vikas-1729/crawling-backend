@@ -160,6 +160,7 @@ module.exports.mostSearch = async function (req, res) {
   console.log('res', db); //tag Model
   try {
     let tags = await tagsModel.find({});
+    console, log('tags', db);
     if (tags) {
       return res.status(200).json({
         success: true,
