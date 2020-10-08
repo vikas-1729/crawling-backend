@@ -165,7 +165,7 @@ module.exports.mostSearch = function (req, res) {
         message: 'most search',
         data: data,
       });
-    });
+    });*/
 };
 
 module.exports.content = function (req, res) {
@@ -186,7 +186,7 @@ module.exports.content = function (req, res) {
       message: 'content come sucessfully',
       data: data,
     });
-  });*/
+  });
 };
 
 function uuidv4() {
