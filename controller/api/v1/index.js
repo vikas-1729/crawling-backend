@@ -155,38 +155,29 @@ function jsonForm($) {
   };
 }
 
-module.exports.mostSearch =  async function (req, res) {
+module.exports.mostSearch = async function (req, res) {
   //most search
   console.log('res', db); //tag Model
   try {
-    let tags=await tagsModel.find({});
-  if(tags){
-    return res.status(200).json({
-            success: true,
-            message: 'most search',
-            data: tags,
-          });
-       
-  }
-  return res.status(300).json({
-    success: true,
-    message: 'most search empty',
-    data: 'empty',
-  });
+    let tags = await tagsModel.find({});
+    if (tags) {
+      return res.status(200).json({
+        success: true,
+        message: 'most search',
+        data: tags,
+      });
+    }
+    return res.status(300).json({
+      success: true,
+      message: 'most search empty',
+      data: 'empty',
+    });
   } catch (error) {
-    
     return res.status(404).json({
       success: false,
       message: error,
-      
     });
- 
-}
-}
-  
-  
-
-
+  }
 
   // tagModel
   //   .find({}, 'tag hitCount')
