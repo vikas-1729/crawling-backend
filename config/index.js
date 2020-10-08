@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 //fill your database name here
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/crawling_db');
+
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/crawling_db', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 
@@ -12,3 +16,6 @@ db.once('open', function () {
 });
 
 module.exports = db;
+//process.env.MONGODB_URL || 'mongodb://localhost/crawling_db',
+//Mongoose
+//'mongodb+srv://singh99vikas:Mongoose@cluster0.snh5a.mongodb.net/<crawling_db>?retryWrites=true&w=majority',
