@@ -147,7 +147,10 @@ function jsonForm($) {
 }
 
 module.exports.mostSearch = function (req, res) {
-  tagModel
+  return res.status(200).json({
+    message: 'here work',
+  });
+  /*tagModel
     .find({}, 'tag hitCount')
     .sort({ hitCount: -1 })
     .exec(function (err, data) {
@@ -183,7 +186,7 @@ module.exports.content = function (req, res) {
       message: 'content come sucessfully',
       data: data,
     });
-  });
+  });*/
 };
 
 function uuidv4() {
