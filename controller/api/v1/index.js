@@ -157,7 +157,6 @@ function jsonForm($) {
 
 module.exports.mostSearch = function (req, res) {
   //most search
-  console.log('res', db); //tag Model
   tagModel
     .find({})
     .sort({ hitCount: -1 })
