@@ -2,13 +2,14 @@ const request = require('request'); // for sending request
 const cheerio = require('cheerio'); //for parsing dom easily
 const BASE_URL = 'https://medium.com/tag'; //base url
 
-const tagModel = require('../../../model/tags');
+const tagModel = require('../../../model/tags'); //tagModel for db
 function yesterday(index) {
+  // function to get date for fetching so for same tag if i fetch it show todays date
   let curr = new Date();
 
   //let today = curr;
   //today.setDate()
-  let today = new Date(curr.getTime() - index * 24 * 60 * 60 * 1000);
+  let today = new Date(curr.getTime() - index * 24 * 60 * 60 * 1000); //function of date
   let month = today.getMonth() + 1;
   if (month < 10) {
     month = '0' + month;
@@ -22,13 +23,15 @@ function yesterday(index) {
 }
 
 module.exports.home = async function (req, res) {
+  // main function to search
   const tagName = req.params.tagName.toLowerCase();
   let index = 1;
   if (req.body && req.body.startIndex) {
     index = req.body.startIndex;
   }
   new Promise(function (resolve, reject) {
-    fetchBlogs(tagName, yesterday(index))
+    // promise so that we first fetch from blog and then according to it act
+    fetchBlogs(tagName, yesterday(index)) // itself it is a promise it come and return list of post in json form
       .then((data) => {
         // console.log('data', data);
 
@@ -40,6 +43,7 @@ module.exports.home = async function (req, res) {
   })
     .then(async (data) => {
       if (data.blogsArray.length > 0) {
+        // if it is new tag inserting in db
         let tagData = await tagModel.findOne({ tag: tagName });
         if (!tagData) {
           await tagModel.create({
@@ -53,6 +57,7 @@ module.exports.home = async function (req, res) {
         }
       }
       return res.status(200).json({
+        // sending my response
         message: 'fetch succesfully',
         success: true,
         data: data,
@@ -67,16 +72,18 @@ module.exports.home = async function (req, res) {
 };
 
 function fetchBlogs(tagName, date) {
+  //promise where i go for medium.com to fetch
   let url = `${BASE_URL}/${tagName}/archive/${date}`;
   //console.log('url', url);
   return new Promise(function (resolve, reject) {
     let responseArray = {};
     request(url, function (err, res, body) {
+      //sending request
       if (err) {
         console.log('error found ', err);
         reject(err);
       }
-      let $ = cheerio.load(body);
+      let $ = cheerio.load(body); //chherio to json form
       responseArray = jsonForm($);
       resolve(responseArray);
     });
@@ -101,6 +108,7 @@ function jsonForm($) {
   });
   let refUrl = $('.u-floatLeft a.button').attr('href');
   $(postArticles).each(function (indexBlog) {
+    //fetching the posts
     let header = {
       author: {
         name: $(this).find('.ds-link').eq(0).text(),
@@ -140,6 +148,7 @@ function jsonForm($) {
   });
 
   return {
+    //sending resposne
     releatedTags: releatedTags,
     blogsArray: BlogsArray,
     refUrl: refUrl,
@@ -147,10 +156,9 @@ function jsonForm($) {
 }
 
 module.exports.mostSearch = function (req, res) {
-  return res.status(200).json({
-    message: 'here work',
-  });
-  /*tagModel
+  //most search
+  console.log('res', tagModel); //tag Model
+  tagModel
     .find({}, 'tag hitCount')
     .sort({ hitCount: -1 })
     .exec(function (err, data) {
@@ -165,10 +173,11 @@ module.exports.mostSearch = function (req, res) {
         message: 'most search',
         data: data,
       });
-    });*/
+    });
 };
 
 module.exports.content = function (req, res) {
+  // go for content
   const url = req.body.url;
   request(url, function (err, response, body) {
     if (err) {
@@ -190,6 +199,7 @@ module.exports.content = function (req, res) {
 };
 
 function uuidv4() {
+  // a unique function to genearte id
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8;

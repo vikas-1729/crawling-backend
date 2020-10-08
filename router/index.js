@@ -4,7 +4,8 @@ const router = express.Router();
 router.use('/api', require('./api'));
 router.get('/', function (req, res) {
   return res.status(200).json({
-    message: 'ok',
+    message: 'page not found',
+    success: false,
   });
 });
 
