@@ -1,7 +1,7 @@
 const request = require('request'); // for sending request
 const cheerio = require('cheerio'); //for parsing dom easily
 const BASE_URL = 'https://medium.com/tag'; //base url
-
+const db = require('../../../config/index');
 const tagModel = require('../../../model/tags'); //tagModel for db
 function yesterday(index) {
   // function to get date for fetching so for same tag if i fetch it show todays date
@@ -155,25 +155,55 @@ function jsonForm($) {
   };
 }
 
-module.exports.mostSearch = function (req, res) {
+module.exports.mostSearch =  async function (req, res) {
   //most search
-  console.log('res', tagModel); //tag Model
-  tagModel
-    .find({}, 'tag hitCount')
-    .sort({ hitCount: -1 })
-    .exec(function (err, data) {
-      if (err) {
-        return res.status(404).json({
-          message: err,
-          sucesss: false,
-        });
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'most search',
-        data: data,
-      });
+  console.log('res', db); //tag Model
+  try {
+    let tags=await tagsModel.find({});
+  if(tags){
+    return res.status(200).json({
+            success: true,
+            message: 'most search',
+            data: tags,
+          });
+       
+  }
+  return res.status(300).json({
+    success: true,
+    message: 'most search empty',
+    data: 'empty',
+  });
+  } catch (error) {
+    
+    return res.status(404).json({
+      success: false,
+      message: error,
+      
     });
+ 
+}
+}
+  
+  
+
+
+
+  // tagModel
+  //   .find({}, 'tag hitCount')
+  //   .sort({ hitCount: -1 })
+  //   .exec(function (err, data) {
+  //     if (err) {
+  //       return res.status(404).json({
+  //         message: err,
+  //         sucesss: false,
+  //       });
+  //     }
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: 'most search',
+  //       data: data,
+  //     });
+  //   });
 };
 
 module.exports.content = function (req, res) {
