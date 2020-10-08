@@ -158,19 +158,22 @@ function jsonForm($) {
 module.exports.mostSearch = function (req, res) {
   //most search
   console.log('res', db); //tag Model
-  tagModel.find({}).exec(function (err, data) {
-    if (err) {
-      return res.status(404).json({
-        message: err,
-        sucesss: false,
+  tagModel
+    .find({})
+    .sort({ hitCount: -1 })
+    .exec(function (err, data) {
+      if (err) {
+        return res.status(404).json({
+          message: err,
+          sucesss: false,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'most search',
+        data: data,
       });
-    }
-    return res.status(200).json({
-      success: true,
-      message: 'most search',
-      data: data,
     });
-  });
 };
 
 module.exports.content = function (req, res) {
