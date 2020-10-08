@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 //fill your database name here
-mongoose.connect('mongodb://localhost/crawling_db');
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/crawling_db');
 
 const db = mongoose.connection;
 
