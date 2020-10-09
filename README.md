@@ -1,7 +1,7 @@
 # crawling-backend
 backend of crawling
 
-Live at  backend https://crawling-backend-api.herokuapp.com/
+
 
 Live at frontnend: https://join-us-8fa0c.web.app
 
