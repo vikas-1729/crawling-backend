@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //fill your database name here
 
 mongoose.connect(
-  'mongodb+srv://singh99vikas:Mongoose@cluster0.snh5a.mongodb.net/<crawling_db>?retryWrites=true&w=majority',
+  process.env.MONGO_DB_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
