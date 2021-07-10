@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 //fill your database name here
-console.log('MONGO DB',process.env.MONGO_DB_URL);
 mongoose.connect(
   process.env.MONGO_DB_URL,
   {
@@ -19,6 +18,3 @@ db.once('open', function () {
 });
 
 module.exports = db;
-//process.env.MONGODB_URL || 'mongodb://localhost/crawling_db',
-//Mongoose
-//'mongodb+srv://singh99vikas:Mongoose@cluster0.snh5a.mongodb.net/<crawling_db>?retryWrites=true&w=majority',
